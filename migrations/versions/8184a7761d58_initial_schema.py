@@ -18,7 +18,7 @@ def upgrade():
     sa.Column('changeover', sa.Integer(), nullable=False),
     sa.Column('timezone', sa.String(), nullable=False),
     sa.Column('policy', sa.String(), nullable=False),
-    sa.CheckConstraint('opening_ml >= 0 AND flow_ml_min > 0 AND start < end AND changeover >= 0'),
+    sa.CheckConstraint('opening_ml >= 0 AND flow_ml_min > 0 AND start < "end" AND changeover >= 0'),
     sa.PrimaryKeyConstraint('date')
     )
     op.create_table('users',
@@ -110,7 +110,7 @@ def upgrade():
     sa.Column('updated_at', sa.String(), nullable=False),
     sa.Column('reviewer_id', sa.Integer(), nullable=True),
     sa.Column('reviewed_at', sa.String(), nullable=True),
-    sa.CheckConstraint('0 <= minimum_ml AND minimum_ml <= approved_ml AND approved_ml <= requested_ml AND start < end'),
+    sa.CheckConstraint('0 <= minimum_ml AND minimum_ml <= approved_ml AND approved_ml <= requested_ml AND start < "end"'),
     sa.ForeignKeyConstraint(['date'], ['days.date'], ),
     sa.ForeignKeyConstraint(['plot_id'], ['plots.id'], ),
     sa.ForeignKeyConstraint(['reviewer_id'], ['users.id'], ),

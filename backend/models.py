@@ -43,7 +43,7 @@ class Day(Base):
     changeover = Column(Integer, nullable=False)
     timezone = Column(String, default='Asia/Bishkek', nullable=False)
     policy = Column(String, default='proportional', nullable=False)
-    __table_args__ = (CheckConstraint('opening_ml >= 0 AND flow_ml_min > 0 AND start < end AND changeover >= 0'),)
+    __table_args__ = (CheckConstraint('opening_ml >= 0 AND flow_ml_min > 0 AND start < "end" AND changeover >= 0'),)
 
 class WaterRequest(Base):
     __tablename__ = 'requests'
@@ -62,7 +62,7 @@ class WaterRequest(Base):
     updated_at = Column(String, default=now, nullable=False)
     reviewer_id = Column(ForeignKey('users.id'))
     reviewed_at = Column(String)
-    __table_args__ = (UniqueConstraint('date', 'plot_id'), CheckConstraint('0 <= minimum_ml AND minimum_ml <= approved_ml AND approved_ml <= requested_ml AND start < end'))
+    __table_args__ = (UniqueConstraint('date', 'plot_id'), CheckConstraint('0 <= minimum_ml AND minimum_ml <= approved_ml AND approved_ml <= requested_ml AND start < "end"'))
 
 class Plan(Base):
     __tablename__ = 'plans'
