@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "fastapi",
+  "buildCommand": "npx --yes pnpm@11.25.0 --dir frontend install --frozen-lockfile && npx --yes pnpm@11.25.0 --dir frontend build",
+  "functions": {
+    "app.py": {
+      "maxDuration": 60,
+      "excludeFiles": "{frontend/node_modules/**,frontend/e2e/**,frontend/test-results/**,frontend/playwright-report/**,tests/**,docs/**,.venv/**,.cache/**,data/**,.env,.env.*}"
+    }
+  }
+}

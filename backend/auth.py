@@ -10,7 +10,7 @@ from .models import LoginSession, User
 passwords = PasswordHash.recommended()
 DUMMY = passwords.hash(secrets.token_urlsafe(24))
 COOKIE = 'fairdrop_session'
-SECURE = os.getenv('COOKIE_SECURE', 'false').lower() == 'true'
+SECURE = os.getenv('COOKIE_SECURE', 'true' if os.getenv('VERCEL') else 'false').lower() == 'true'
 
 # Request annotation is needed on the dependency exposed to FastAPI.
 def get_db(request: Request):

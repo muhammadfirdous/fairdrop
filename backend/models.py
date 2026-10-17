@@ -92,7 +92,7 @@ class Turn(Base):
     actual_start = Column(String)
     actual_finish = Column(String)
     reason = Column(Text, default='', nullable=False)
-    __table_args__ = (CheckConstraint('actual_ml >= 0 AND target_ml >= 0'), Index('one_active_hose', 'state', unique=True, sqlite_where=text("state = 'In progress'")))
+    __table_args__ = (CheckConstraint('actual_ml >= 0 AND target_ml >= 0'), Index('one_active_hose', 'state', unique=True, sqlite_where=text("state = 'In progress'"), postgresql_where=text("state = 'In progress'")))
 
 class Adjustment(Base):
     __tablename__ = 'adjustments'

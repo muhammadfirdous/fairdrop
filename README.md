@@ -178,3 +178,11 @@ Implementation references: [Vite runtime requirements](https://vite.dev/guide/),
 ## Deliberate limits
 
 One community, one source, one hose, six active plots, one continuous window and uninterrupted turn per allocation. This version records manual outcomes; it does not control hardware, predict weather, diagnose crops, measure tanks, run overnight schedules, or replace an active plan. No public registration, email recovery, external authentication, or public deployment is included. All times are Asia/Bishkek; a timezone-switching interface is outside this version.
+
+## Vercel deployment
+
+Import this repository with the **FastAPI** preset and the repository root as the Root Directory. `vercel.json` builds the React frontend and `app.py` serves both the API and frontend. Connect a Neon Postgres database from Vercel Storage to the Production environment; its `DATABASE_URL` is injected automatically. Use `DEMO_MODE=true` for the fictional hackathon demo and `COOKIE_SECURE=true` for HTTPS.
+
+On the first server startup, Alembic migrates the database and seeds demo accounts only when the users table is empty. Later starts preserve all existing records. PostgreSQL transaction advisory locks serialize community mutations across Vercel workers, and a partial unique index enforces the single active hose. SQLite remains the default for local use. Do not connect preview deployments to the production database; use a separate Neon branch if enabling previews.
+
+The hosted demo uses the same sample credentials listed above. Its shared demo data can be changed by visitors; do not enter real personal data. The deployment refuses to start with ephemeral SQLite storage.

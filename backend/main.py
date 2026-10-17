@@ -4,6 +4,7 @@ import os
 import re
 import secrets
 import time
+from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI, Depends, Request, Response, HTTPException
 from fastapi.responses import FileResponse, StreamingResponse
@@ -21,7 +22,16 @@ DEMO_MODE = os.getenv('DEMO_MODE', 'true').lower() == 'true'
 
 
 def create_app(db_engine=None):
-    app = FastAPI(title='FairDrop', version='1.0.0')
+    @asynccontextmanager
+    async def lifespan(app):
+        if os.getenv('VERCEL') and db_engine is None:
+            from .deploy import initialize_database
+            if app.state.engine.dialect.name != 'postgresql':
+                raise RuntimeError('Connect a persistent Postgres database using DATABASE_URL before deploying FairDrop.')
+            initialize_database(app.state.engine, demo=DEMO_MODE)
+        yield
+
+    app = FastAPI(title='FairDrop', version='1.0.0', lifespan=lifespan)
     app.state.engine = db_engine or engine
 
     @app.middleware('http')
